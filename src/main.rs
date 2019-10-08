@@ -2,6 +2,21 @@
 
 #[macro_use] extern crate rocket;
 
+#[get("/admin")]
+fn admin(){
+    unimplemented!();
+}
+
+#[post("/login")]
+fn login_post(){
+    unimplemented!();
+}
+
+#[get("/login")]
+fn login(){
+    unimplemented!();
+}
+
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
