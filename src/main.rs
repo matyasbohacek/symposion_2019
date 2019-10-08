@@ -5,8 +5,10 @@
 use rocket::response::NamedFile;
 use rocket::data::FromDataSimple;
 use rocket::{Request, Data};
-use rocket::data::Outcome;
-use toml::Value;
+use rocket::data::{Outcome, Outcome::*};
+use rocket::http::{Cookies, Cookie};
+
+const LIMIT: u64 = 256; // input data limit
 
 struct Login{
     login: String,
@@ -17,8 +19,26 @@ impl FromDataSimple for Login{
     type Error = String;
 
     fn from_data(req: &Request, data: Data) -> Outcome<Self, String>{
-        unimplemented!();
-        
+        let person_ct = ContentType::new("application", "x-login");
+        if req.content_type() != Some(&person_ct) {
+            return Outcome::Forward(data);
+        }
+
+        let mut string = String::new();
+        if let Err(e) = data.open().take(LIMIT).read_to_string(&mut string) {
+            return Failure((Status::InternalServerError, format!("{:?}", e)));
+        }
+
+        let (login, password) = match string.find(':') {
+            Some(i) => (string[..i].to_string(), &string[(i + 1)..]),
+            None => return Failure((Status::UnprocessableEntity, "':'".into()))
+        };
+
+        Success(Login{
+            login,
+            password,
+        })
+
     }
 }
 
@@ -38,8 +58,8 @@ impl FromDataSimple for Login{
 //}
 
 #[post("/login", data="<logindata>")]
-fn login_post(logindata: Login){
-    unimplemented!();
+fn login_post(logindata: Login, cookies: Cookies){
+    cookies.add_private(Cookie::new("admin", "true")) // TODO
 }
 
 #[get("/login")]
