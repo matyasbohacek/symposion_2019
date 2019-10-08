@@ -2,27 +2,40 @@
 
 #[macro_use] extern crate rocket;
 
-use rocket::request::{FromRequest, Form};
+use rocket::response::NamedFile;
+use rocket::data::FromDataSimple;
+use rocket::{Request, Data};
+use rocket::data::Outcome;
+use toml::Value;
 
-#[derive(FromForm)]
 struct Login{
     login: String,
     password: String,
 }
 
-struct AdminGuard;
+impl FromDataSimple for Login{
+    type Error = String;
 
-impl FromRequest for AdminGuard{
-    fn from_request(){
+    fn from_data(req: &Request, data: Data) -> Outcome<Self, String>{
         unimplemented!();
+        
     }
 }
 
+//struct AdminGuard;
 
-#[get("/admin")]
-fn admin(admin: AdminGuard){
-    unimplemented!();
-}
+//impl FromRequest for AdminGuard{
+    //type Error = String;
+    //fn from_request(){
+        //unimplemented!();
+    //}
+//}
+
+
+//#[get("/admin")]
+//fn admin(admin: AdminGuard){
+    //unimplemented!();
+//}
 
 #[post("/login", data="<logindata>")]
 fn login_post(logindata: Login){
@@ -35,8 +48,8 @@ fn login(){
 }
 
 #[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+fn index() -> NamedFile {
+    NamedFile::open("conf/index.html").expect("FUCK")
 }
 
 
