@@ -23,7 +23,7 @@ fn admin(admin: AdminGuard){
 }
 
 #[post("/login", data="<logindata>")]
-fn login_post(logindata:){
+fn login_post(logindata: Login){
     unimplemented!();
 }
 
