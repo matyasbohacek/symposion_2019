@@ -4,9 +4,10 @@
 
 use rocket::response::NamedFile;
 use rocket::data::FromDataSimple;
-use rocket::{Request, Data};
-use rocket::data::{Outcome, Outcome::*};
-use rocket::http::{Cookies, Cookie};
+use rocket::{Request, Data, Outcome::*};
+use rocket::data::Outcome;
+use rocket::http::{Cookies, Cookie, ContentType, Status};
+use std::io::Read;
 
 const LIMIT: u64 = 256; // input data limit
 
@@ -35,8 +36,8 @@ impl FromDataSimple for Login{
         };
 
         Success(Login{
-            login,
-            password,
+            login: login.to_string(),
+            password: password.to_string(),
         })
 
     }
@@ -58,7 +59,7 @@ impl FromDataSimple for Login{
 //}
 
 #[post("/login", data="<logindata>")]
-fn login_post(logindata: Login, cookies: Cookies){
+fn login_post(logindata: Login, mut cookies: Cookies){
     cookies.add_private(Cookie::new("admin", "true")) // TODO
 }
 
