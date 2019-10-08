@@ -2,13 +2,28 @@
 
 #[macro_use] extern crate rocket;
 
+use rocket::request::{FromRequest, Form};
+
+#[derive(FromForm)]
+struct Login{
+    login: String,
+    password: String,
+}
+
+struct AdminGuard;
+
+impl FromRequest for AdminGuard{
+    fn 
+}
+
+
 #[get("/admin")]
-fn admin(){
+fn admin(admin: AdminGuard){
     unimplemented!();
 }
 
-#[post("/login")]
-fn login_post(){
+#[post("/login", data="<logindata>")]
+fn login_post(logindata:){
     unimplemented!();
 }
 
