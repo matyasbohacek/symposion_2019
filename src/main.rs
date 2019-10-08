@@ -13,7 +13,9 @@ struct Login{
 struct AdminGuard;
 
 impl FromRequest for AdminGuard{
-    fn 
+    fn from_request(){
+        unimplemented!();
+    }
 }
 
 
