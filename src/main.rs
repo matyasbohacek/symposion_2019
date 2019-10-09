@@ -42,21 +42,21 @@ impl FromDataSimple for Login{
 
     }
 }
+/*
+struct AdminGuard;
 
-//struct AdminGuard;
+impl FromRequest for AdminGuard{
+    type Error = String;
+    fn from_request(){
+        unimplemented!();
+    }
+}
+*/
 
-//impl FromRequest for AdminGuard{
-    //type Error = String;
-    //fn from_request(){
-        //unimplemented!();
-    //}
-//}
-
-
-//#[get("/admin")]
-//fn admin(admin: AdminGuard){
-    //unimplemented!();
-//}
+#[get("/admin")]
+fn admin(admin: AdminGuard){
+    unimplemented!();
+}
 
 #[post("/login", data="<logindata>")]
 fn login_post(logindata: Login, mut cookies: Cookies){
