@@ -1,6 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use] extern crate rocket;
+#[macro_use] extern crate rocket_contrib;
 
 use rocket::response::NamedFile;
 use rocket::data::FromDataSimple;
@@ -8,6 +9,8 @@ use rocket::{Request, Data, Outcome::*};
 use rocket::data::Outcome;
 use rocket::http::{Cookies, Cookie, ContentType, Status};
 use std::io::Read;
+
+use rocket_contrib::databases::diesel;
 
 const LIMIT: u64 = 256; // input data limit
 
@@ -42,6 +45,10 @@ impl FromDataSimple for Login{
 
     }
 }
+
+#[database("sqlite_users")]
+struct Users(diesel::SqliteConnection);
+
 /*
 struct AdminGuard;
 
@@ -51,15 +58,17 @@ impl FromRequest for AdminGuard{
         unimplemented!();
     }
 }
-*/
+
 
 #[get("/admin")]
 fn admin(admin: AdminGuard){
     unimplemented!();
 }
+*/
 
 #[post("/login", data="<logindata>")]
-fn login_post(logindata: Login, mut cookies: Cookies){
+fn login_post(logindata: Login, db: Users, mut cookies: Cookies){
+
     cookies.add_private(Cookie::new("admin", "true")) // TODO
 }
 
@@ -76,6 +85,8 @@ fn index() -> NamedFile {
 
 
 fn main() {
-    rocket::ignite().mount("/", routes![index]).launch();
+    rocket::ignite()
+        .attach(Users::fairing())
+        .mount("/", routes![index]).launch();
 }
 
