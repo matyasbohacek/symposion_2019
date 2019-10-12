@@ -82,11 +82,23 @@ fn index() -> NamedFile {
     NamedFile::open("conf/index.html").expect("FUCK")
 }
 
+#[get("/.css")]
+fn index_css() -> NamedFile{
+    NamedFile::open("conf/index.css").expect("FUCK")
+}
 
+#[get("/.js")]
+fn index_js() -> NamedFile{
+    NamedFile::open("conf/index.js").expect("FUCK")
+}
 
 fn main() {
     rocket::ignite()
-        .attach(Users::fairing())
-        .mount("/", routes![index]).launch();
+        //.attach(Users::fairing())
+        .mount("/", routes![
+            index,
+            index_css,
+            index_js,
+        ]).launch();
 }
 
