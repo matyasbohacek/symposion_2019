@@ -11,6 +11,7 @@ extern crate diesel;
 // rocket imports
 use rocket::http::{Cookie, Cookies};
 use rocket::response::NamedFile;
+use diesel::prelude::*;
 
 //modules
 mod login;
@@ -30,9 +31,15 @@ use login::*;
     //cookies.add_private(Cookie::new("admin", "true")); // TODO
 //}
 
-//#[get("/login")]
-//fn login(db: Users) -> String {
-//}
+#[get("/login")]
+fn login(db: Users) -> String {
+    use schema::users::dsl::*;
+
+    let result = users.filter(login.eq("admin2"))
+        .load::<User>(&*db)
+        .expect("oops");
+    format!("{:?}", result)
+}
 
 #[get("/")]
 fn index() -> NamedFile {
@@ -47,6 +54,6 @@ fn styling(file: String) -> Option<NamedFile>{
 fn main() {
     rocket::ignite()
         .attach(Users::fairing())
-        .mount("/", routes![index, styling/*, login*/])
+        .mount("/", routes![index, styling, login])
         .launch();
 }

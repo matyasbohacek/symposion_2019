@@ -1,2 +1,2 @@
 [global.databases]
-sqlite_users = { url = "passwd.sqlite" }
+sqlite_users = { url = "pass.sqlite" }
