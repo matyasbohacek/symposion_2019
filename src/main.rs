@@ -12,7 +12,10 @@ use rocket::response::NamedFile;
 use rocket::{Data, Outcome::*, Request};
 use std::io::Read;
 
-use rocket_contrib::databases::diesel;
+use rocket_contrib::databases::diesel::sqlite::{SqliteConnection, SqliteQueryBuilder};
+use rocket_contrib::databases::diesel::Connection;
+use rocket_contrib::databases::diesel::connection::SimpleConnection;
+use rocket_contrib::databases::diesel::query_builder::QueryBuilder;
 
 const LIMIT: u64 = 256; // input data limit
 
@@ -48,7 +51,11 @@ impl FromDataSimple for Login {
 }
 
 #[database("sqlite_users")]
-struct Users(diesel::SqliteConnection);
+struct Users(SqliteConnection);
+
+fn getuser(conn: &SqliteConnection) -> bool {
+    true //TODO
+}
 
 /*
 struct AdminGuard;
@@ -68,13 +75,14 @@ fn admin(admin: AdminGuard){
 */
 
 #[post("/login", data = "<logindata>")]
-fn login_post(logindata: Login, db: Users, mut cookies: Cookies) {
+fn login_post(logindata: Login, db: Users, mut cookies: Cookies) -> String {
     cookies.add_private(Cookie::new("admin", "true")) // TODO
 }
 
 #[get("/login")]
-fn login() {
-    unimplemented!();
+fn login(db: Users) -> String {
+    format!("{}", getuser(&*db)) // zatim debug stranka
+        // zapasim totiz s databazi
 }
 
 #[get("/")]
@@ -89,7 +97,7 @@ fn styling(file: String) -> Option<NamedFile>{
 
 fn main() {
     rocket::ignite()
-        //.attach(Users::fairing())
-        .mount("/", routes![index, styling])
+        .attach(Users::fairing())
+        .mount("/", routes![index, styling, login])
         .launch();
 }
