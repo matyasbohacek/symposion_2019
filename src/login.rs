@@ -9,8 +9,8 @@ const LIMIT: u64 = 256; // input data limit
 
 #[derive(Debug)]
 pub struct Login {
-    login: String,
-    password: String,
+    pub login: String,
+    pub password: String,
 }
 
 impl FromDataSimple for Login {

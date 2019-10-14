@@ -1,5 +1,5 @@
 
-use rocket::FromRequest;
+use rocket::request::FromRequest;
 
 pub struct AdminGuard;
 
