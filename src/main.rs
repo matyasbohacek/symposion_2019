@@ -26,14 +26,17 @@ use login::*;
     //unimplemented!();
 //}
 
-//#[post("/login", data = "<logindata>")]
-//fn login_post(logindata: Login, db: Users, mut cookies: Cookies){
+#[post("/login", data = "<logindata>")]
+fn login_post(logindata: Login, db: Users, mut cookies: Cookies) -> String{
     //use schema::users::dsl::*;
     //let result = users.filter(login.eq("admin2"))
         //.load::<User>(&*db)
         //.expect("oops");
     //cookies.add_private(Cookie::new("admin", "true")); // TODO
-//}
+
+    format!("{:?}", logindata)
+
+}
 
 #[get("/login")]
 fn login() -> NamedFile {
@@ -50,9 +53,15 @@ fn styling(file: String) -> Option<NamedFile>{
     NamedFile::open(format!("style/{}", file)).ok()
 }
 
+#[catch(404)]
+fn not_found() -> NamedFile {
+    NamedFile::open("www/404.html").unwrap()
+}
+
 fn main() {
     rocket::ignite()
+        .register(catchers![not_found])
         .attach(Users::fairing())
-        .mount("/", routes![index, styling, login])
+        .mount("/", routes![index, styling, login, login_post])
         .launch();
 }
