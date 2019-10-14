@@ -5,6 +5,8 @@
 extern crate rocket;
 #[macro_use]
 extern crate rocket_contrib;
+#[macro_use]
+extern crate diesel;
 
 // rocket imports
 use rocket::http::{Cookie, Cookies};
@@ -12,6 +14,10 @@ use rocket::response::NamedFile;
 
 //modules
 mod login;
+mod schema;
+mod db;
+
+use db::*;
 use login::*;
 
 //#[get("/admin")]
@@ -26,7 +32,6 @@ use login::*;
 
 //#[get("/login")]
 //fn login(db: Users) -> String {
-    //"lol".to_string()
 //}
 
 #[get("/")]
@@ -41,7 +46,7 @@ fn styling(file: String) -> Option<NamedFile>{
 
 fn main() {
     rocket::ignite()
-        //.attach(Users::fairing())
+        .attach(Users::fairing())
         .mount("/", routes![index, styling/*, login*/])
         .launch();
 }
