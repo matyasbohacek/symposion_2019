@@ -28,22 +28,21 @@ use login::*;
 
 //#[post("/login", data = "<logindata>")]
 //fn login_post(logindata: Login, db: Users, mut cookies: Cookies){
+    //use schema::users::dsl::*;
+    //let result = users.filter(login.eq("admin2"))
+        //.load::<User>(&*db)
+        //.expect("oops");
     //cookies.add_private(Cookie::new("admin", "true")); // TODO
 //}
 
 #[get("/login")]
-fn login(db: Users) -> String {
-    use schema::users::dsl::*;
-
-    let result = users.filter(login.eq("admin2"))
-        .load::<User>(&*db)
-        .expect("oops");
-    format!("{:?}", result)
+fn login() -> NamedFile {
+    NamedFile::open("www/login.html").unwrap()
 }
 
 #[get("/")]
 fn index() -> NamedFile {
-    NamedFile::open("www/index.html").expect("FUCK")
+    NamedFile::open("www/index.html").unwrap()
 }
 
 #[get("/style/<file>")]
