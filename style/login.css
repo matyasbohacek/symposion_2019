@@ -1,0 +1,19 @@
+h1 {
+	color:grey;
+}
+div {
+	border-style: solid;
+	border-width: thick;
+	border-color: gray;
+	padding: 12px;
+
+	position: absolute;
+	top: 25%;
+	left: 0;
+	width: 100%;
+  	text-align: center;
+}
+form {
+	font-family: sans-serif;
+}
+
