@@ -79,22 +79,17 @@ fn login() {
 
 #[get("/")]
 fn index() -> NamedFile {
-    NamedFile::open("conf/index.html").expect("FUCK")
+    NamedFile::open("www/index.html").expect("FUCK")
 }
 
-#[get("/.css")]
-fn index_css() -> NamedFile {
-    NamedFile::open("conf/index.css").expect("FUCK")
-}
-
-#[get("/.js")]
-fn index_js() -> NamedFile {
-    NamedFile::open("conf/index.js").expect("FUCK")
+#[get("/style/<file>")]
+fn styling(file: String) -> Option<NamedFile>{
+    NamedFile::open(format!("style/{}", file)).ok()
 }
 
 fn main() {
     rocket::ignite()
         //.attach(Users::fairing())
-        .mount("/", routes![index, index_css, index_js,])
+        .mount("/", routes![index, styling])
         .launch();
 }
