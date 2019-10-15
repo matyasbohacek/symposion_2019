@@ -8,40 +8,42 @@ extern crate rocket_contrib;
 #[macro_use]
 extern crate diesel;
 
-
 // rocket imports
-use rocket::http::{Cookie, Cookies};
-use rocket::response::{NamedFile, Redirect};
 use diesel::prelude::*;
+use rocket::http::{Cookie, Cookies};
+use rocket::request::Form;
+use rocket::response::{NamedFile, Redirect};
 
 //modules
+mod db;
 mod login;
 mod schema;
-mod db;
-//mod admin;
+mod admin;
 
 use db::*;
 use login::*;
-//use admin::*;
+use admin::*;
 
 #[get("/admin")]
-fn admin(/*admin: AdminGuard*/) -> String{ //TODO
+fn admin(admin: AdminGuard) -> String {
+    //TODO
     "congrats".to_string()
 }
 
 #[post("/login", data = "<logindata>")]
-fn login_post(logindata: Login, db: Users, mut cookies: Cookies) -> Redirect{
+fn login_post(logindata: Form<Login>, db: Users, mut cookies: Cookies) -> Redirect {
     use schema::users::dsl::*;
-    let result = users.filter(login.eq(logindata.login))
-        .filter(password.eq(logindata.password))
+    let result = users
+        .filter(login.eq(&logindata.login))
+        .filter(password.eq(&logindata.password))
         .load::<User>(&*db)
         .unwrap();
-    
-    if result.len() > 0{
+
+    if result.len() > 0 {
         cookies.add_private(Cookie::new("admin", "true"));
-        return Redirect::to(uri!(admin))
+        return Redirect::to(uri!(admin));
     } else {
-        return Redirect::to(uri!(login))
+        return Redirect::to(uri!(login));
     }
 }
 
@@ -56,7 +58,7 @@ fn index() -> NamedFile {
 }
 
 #[get("/style/<file>")]
-fn styling(file: String) -> Option<NamedFile>{
+fn styling(file: String) -> Option<NamedFile> {
     NamedFile::open(format!("style/{}", file)).ok()
 }
 

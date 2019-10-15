@@ -6,5 +6,5 @@ pub struct Users(SqliteConnection);
 #[derive(Queryable, Debug)]
 pub struct User {
     pub login: String,
-    pub password: String
+    pub password: String,
 }
