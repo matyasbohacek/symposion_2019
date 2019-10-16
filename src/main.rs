@@ -18,14 +18,14 @@ use rocket::response::{NamedFile, Redirect};
 mod db;
 mod login;
 mod schema;
-mod admin;
+//mod admin;
 
 use db::*;
 use login::*;
-use admin::*;
+//use admin::*;
 
 #[get("/admin")]
-fn admin(admin: AdminGuard) -> String {
+fn admin(/*admin: AdminGuard*/) -> String {
     //TODO
     "congrats".to_string()
 }
@@ -40,7 +40,7 @@ fn login_post(logindata: Form<Login>, db: Users, mut cookies: Cookies) -> Redire
         .unwrap();
 
     if result.len() > 0 {
-        cookies.add_private(Cookie::new("admin", "true"));
+        cookies.add_private(Cookie::new("login", logindata.login));
         return Redirect::to(uri!(admin));
     } else {
         return Redirect::to(uri!(login));
