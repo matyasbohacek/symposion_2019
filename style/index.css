@@ -1,3 +1,30 @@
-h1{
-	color:orange;
+body{
+	background-color: #696969;
 }
+
+div.bottom{
+	background-color: #777777;
+	padding: 2%;
+	text-align: center;
+}
+
+.bottom > a{
+	background-color: red;
+}
+
+.kosmonaut{
+	grid-area: kosmonaut;
+}
+
+.obsach{
+	grid-area: obsach;
+}
+
+.grid{
+	display: grid;
+	grid-template-areas: 'kosmonaut obsach';
+	grid-template-columns: 20% auto;
+	grid-gap: 10%;
+	padding: 3%;
+}
+
