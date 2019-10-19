@@ -32,3 +32,6 @@ optional = true
 default-features = false
 features = ["diesel_sqlite_pool"]
 
+[target."cfg(debug_assertions)".dependencies]
+console_error_panic_hook = "0.1.5"
+

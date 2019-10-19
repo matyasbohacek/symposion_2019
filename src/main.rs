@@ -1,4 +1,5 @@
 #![cfg_attr(feature = "backend", feature(proc_macro_hygiene, decl_macro))]
+#![cfg_attr(feature = "frontend", feature(proc_macro_hygiene, slice_patterns))]
 
 // macros
 #[cfg_attr(feature = "backend", macro_use)]
@@ -22,6 +23,7 @@ extern crate diesel;
 mod login;
 #[cfg(feature = "backend")] mod schema;
 //mod admin;
+#[cfg(feature = "frontend")] mod wasm;
 
 #[cfg(feature = "backend")] use db::*;
 use login::*;
@@ -90,6 +92,6 @@ fn main() {
     }
 
     #[cfg(feature = "frontend")] {
-        println!("no homo");
+        wasm::start();
     }
 }
