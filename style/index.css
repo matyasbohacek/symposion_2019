@@ -1,11 +1,13 @@
 body{
 	background-color: #696969;
 }
+
 div.bottom{
 	background-color: #777777;
 	padding: 2%;
 	text-align: center;
 }
+
 .bottom > a{
 	background-color: red;
 }
@@ -13,6 +15,7 @@ div.bottom{
 .kosmonaut{
 	grid-area: kosmonaut;
 }
+
 .obsach{
 	grid-area: obsach;
 }
