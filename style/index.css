@@ -1,26 +1,27 @@
 body{
 	background-color: #696969;
 }
-
-h1{
-	color:orange;
-}
 div.bottom{
 	background-color: #777777;
 	padding: 2%;
 	text-align: center;
 }
-a.bottom{
-
+.bottom > a{
+	background-color: red;
 }
 
-.kosmonaut{grid-area: kosmonaut;}
-.obsach{grid-area: obsach;}
+.kosmonaut{
+	grid-area: kosmonaut;
+}
+.obsach{
+	grid-area: obsach;
+}
 
 .grid{
 	display: grid;
 	grid-template-areas: 'kosmonaut obsach';
-	grid-gap: 10px;
-	padding: 10px;
+	grid-template-columns: 20% auto;
+	grid-gap: 10%;
+	padding: 3%;
 }
 
