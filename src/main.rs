@@ -40,7 +40,7 @@ fn login_post(logindata: Form<Login>, db: Users, mut cookies: Cookies) -> Redire
         .unwrap();
 
     if result.len() > 0 {
-        cookies.add_private(Cookie::new("login", logindata.login));
+        //cookies.add_private(Cookie::new("login", logindata.login));
         return Redirect::to(uri!(admin));
     } else {
         return Redirect::to(uri!(login));
