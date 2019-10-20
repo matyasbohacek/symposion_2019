@@ -15,15 +15,15 @@ use rocket::response::{NamedFile, Redirect};
 mod db;
 mod login;
 mod schema;
-//mod admin;
+mod admin;
 
 
 use db::*;
 use login::*;
-//use admin::*;
+use admin::*;
 
-#[get("/admin")]
-fn admin(/*admin: AdminGuard*/) -> String {
+#[get("/admin", data="<login>")]
+fn admin(admin: AdminGuard, login: String) -> String {
     //TODO
     "congrats".to_string()
 }

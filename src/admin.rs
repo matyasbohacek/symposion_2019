@@ -1,16 +1,15 @@
 use rocket::request::{self, FromRequest, Request};
-use rocket::Outcome;
-use rocket::http::{Cookie, Cookies};
+use rocket::http::{Cookie, Cookies, Status};
 
-pub struct AdminGuard;
-
+pub struct AdminGuard(String);
 
 impl<'a, 'r> FromRequest<'a, 'r> for AdminGuard{
     type Error = String;
-    fn from_request(request: &'a Request<'r>) -> Outcome<Self, Self::Error>{
-        request.cookies()
+    fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, Self::Error>{
+        let login = request.cookies()
             .get_private("login")
-            .map(|&x| {println!("{}", x)});
-        Outcome::Success()
+            .unwrap_or(Cookie::new("login", "none"))
+            .value();
+        request::Outcome::Success(AdminGuard(login.to_string()))
     }
 }
