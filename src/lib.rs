@@ -1,4 +1,7 @@
-//#![feature(proc_macro_hygiene, slice_patterns)]
+#![feature(proc_macro_hygiene, slice_patterns)]
+
+#[macro_use]
+extern crate wasm_bindgen;
 
 use wasm_bindgen::prelude::*;
 use web_sys::console;
@@ -7,7 +10,7 @@ use web_sys::console;
 // allocator.
 //
 // If you don't want to use `wee_alloc`, you can safely delete this.
-#[cfg(feature = "wee_alloc")]
+#[cfg(feature = "frontend")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
@@ -17,7 +20,7 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
         // N.B. query_selector returns Result<Option<Element>>
         // So, calling .ok() on that converts it to an Option<Option<Element>>
         // and hence, we must call .ok_or() twice.
-        .and_then(|d| d.query_selector("#app").ok())
+        .and_then(|d| d.query_selector("body").ok())
         .ok_or(JsValue::NULL)?
         .ok_or(JsValue::NULL)
 }

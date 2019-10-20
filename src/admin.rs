@@ -1,4 +1,3 @@
-
 use rocket::request::{self, FromRequest, Request};
 use rocket::Outcome;
 use rocket::http::{Cookie, Cookies};
