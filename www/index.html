@@ -2,7 +2,15 @@
 <html>
 	<head>
 		<link rel="stylesheet" type"text/css" href="style/index.css">
-		<script src="pkg/symposion_2019.js"></script>
+		<script type="module">
+			import init from './pkg/symposion_2019.js';
+
+			async function run() {
+			await init();
+			}
+
+			run();
+		</script>
 		<meta charset="UTF-8">
 	</head>
 	<body>
@@ -11,7 +19,7 @@
 				<h1>Sympozion 2019</h1>
 				<hr>
 			</div>
-			<div class="obsach">
+			<div class="obsach" id="obsah">
 				<p>loldsada</p>
 			</div>
 		</div>
@@ -20,8 +28,8 @@
 			<a href="login">login page</a>
 			<a href="admin">admin page</a>
 			<a href=https://gjk.cz class=bottom>GJK</a>
-			<a href="https://www.facebook.com/SymposionGjk/" class=bottom>FACEBOOK</a>
-			<a href="https://instagram.com/symposion_gjk" class=bottom>INSTAGRAM</a>
+			<a href=https://www.facebook.com/SymposionGjk/ class=bottom>FACEBOOK</a>
+			<a href=https://instagram.com/symposion_gjk class=bottom>INSTAGRAM</a>
 		</div>
 	</body>
 </html>
