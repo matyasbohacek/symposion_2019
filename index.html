@@ -2,7 +2,15 @@
 <html>
 	<head>
 		<link rel="stylesheet" type"text/css" href="style/index.css">
-		<script src="pkg/symposion_2019.js" type="module"></script>
+		<script type="module">
+    		import init from './pkg/symposion_2019.js';
+
+    		async function run() {
+        		await init();
+    		}
+
+    		run();
+    	</script>
 		<meta charset="UTF-8">
 	</head>
 	<body>

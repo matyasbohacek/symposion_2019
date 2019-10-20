@@ -28,6 +28,9 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
 // This is the entry point of your app
 #[wasm_bindgen(start)]
 pub fn start() -> Result<(), JsValue> {
+    console::log_1(&JsValue::from_str(
+        "Welcome to Smithy! Head to `src/lib.rs`. Happy hacking!",
+    ));
     // This provides better error messages in debug mode.
     // It's disabled in release mode so it doesn't bloat up the file size.
     #[cfg(debug_assertions)]
