@@ -5,7 +5,7 @@ backend: src/*
 
 
 frontend: src/*
-	wasm-pack build -t browser -- --features frontend
+	wasm-pack build -t web -- --features frontend
 
 
 .PHONY: backend frontend
