@@ -60,6 +60,11 @@ fn styling(file: String) -> Option<NamedFile> {
     NamedFile::open(format!("style/{}", file)).ok()
 }
 
+#[get("/pkg/<file>")]
+fn wasm_styling(file: String) -> Option<NamedFile> {
+    NamedFile::open(format!("pkg/{}", file)).ok()
+}
+
 #[catch(404)]
 fn not_found() -> NamedFile {
     NamedFile::open("www/404.html").unwrap()
@@ -69,6 +74,6 @@ fn main() {
     rocket::ignite()
         .register(catchers![not_found])
         .attach(Users::fairing())
-        .mount("/", routes![index, styling, login, login_post, admin])
+        .mount("/", routes![index, styling, wasm_styling, login, login_post, admin])
         .launch();
 }

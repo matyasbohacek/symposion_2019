@@ -1,5 +1,6 @@
 #![feature(proc_macro_hygiene, slice_patterns)]
 
+#![cfg(feature = "frontend")]
 #[macro_use]
 extern crate wasm_bindgen;
 
@@ -10,7 +11,6 @@ use web_sys::console;
 // allocator.
 //
 // If you don't want to use `wee_alloc`, you can safely delete this.
-#[cfg(feature = "frontend")]
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
