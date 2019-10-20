@@ -1,7 +1,7 @@
 use rocket::request::{self, FromRequest, Request};
-use rocket::http::{Cookie, Cookies, Status};
+use rocket::http::Cookie;
 
-pub struct AdminGuard(String);
+pub struct AdminGuard(pub String);
 
 impl<'a, 'r> FromRequest<'a, 'r> for AdminGuard{
     type Error = String;
