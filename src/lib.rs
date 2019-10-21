@@ -1,5 +1,4 @@
 #![feature(proc_macro_hygiene, slice_patterns)]
-
 #![cfg(feature = "frontend")]
 #[macro_use]
 extern crate wasm_bindgen;
