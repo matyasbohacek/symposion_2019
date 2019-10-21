@@ -1,5 +1,5 @@
 [package]
-name = "sympozion_2019"
+name = "symposion_2019"
 version = "0.69.0"
 authors = ["Dawid J. Kubis <dawid.kubis3@gmail.com>", "Lukáš Hozda <luk.hozda@gmail.com>"]
 edition = "2018"
