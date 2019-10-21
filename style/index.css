@@ -40,14 +40,28 @@ div.bottom{
 .symposion {
 	padding: 10px;
 	grid-area: symposion;
+	place-self: center;
+	display: grid;
+	z-index: 1;
+}
+
+.symposion h1 {
+	display: grid;
+	letter-spacing: 1v;
+	text-transform: uppercase;
 }
 
 .kosmonaut {
 	grid-area: kosmonaut;
 	padding: 10px;
 }
+
 .kosmonaut .lod {
 	z-index: 1001;
+}
+
+.kosmonaut > img {
+	transform: scale(0.8);
 }
 
 .pouto {
@@ -58,14 +72,19 @@ div.bottom{
 	font-size: 3em;
 	font-weight: normal;
 	letter-spacing: .3em;
+	z-index: 1;
 }
 
-.obsach { grid-area: obsach; }
+.obsach {
+	grid-area: obsach;
+	z-index: 2;
+}
 
 .ikonky {
+	z-index: 1;
 	overflow: hidden;
 	grid-area: ikonky;
-	display: grid;
+	display: grid !important;	
 }
 
 .half-ellipse {
@@ -78,4 +97,42 @@ div.bottom{
 	border-radius: 50% / 100%;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-template-rows: 1fr;
+	grid-template-areas: ". facebook instagram kepler .";
+}
+
+.planeta {
+	margin-left: 60%;
+}
+
+.kosmik {
+	z-index: 1234;
+	margin-left: 70%;
+	margin-top: 20%;
+}
+
+.ikonka {
+	padding-top: 1.5em;
+	object-fit: scale-down;
+	height: 100px;
+	justify-self: center;
+	cursor: pointer;
+	pointer-events: auto;
+	z-index: 1200;
+}
+
+.fb {
+	grid-area: facebook;
+	justify-self: right;
+	cursor: pointer;
+}
+
+.ig {
+	grid-area: instagram;
+}
+
+.kp {
+	grid-area: kepler;
+	justify-self: left;
 }

@@ -2,9 +2,11 @@
 <html>
 	<head>
 		<link href="https://fonts.googleapis.com/css?family=Montserrat:100&display=swap" rel="stylesheet">
-		<link rel="stylesheet" type"text/css" href="style/index.css">
-		<link rel="stylesheet" type"text/css" href="style/roadrunner.css">
+		<link rel="stylesheet" type="text/css" href="style/index.css">
+		<link rel="stylesheet" type="text/css" href="style/roadrunner.css">
+		<link rel="stylesheet" type="text/css" href="style/twinkle.css">
 		<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
 		<script type="module">
 			import init from './pkg/symposion_2019.js';
 
@@ -13,26 +15,36 @@
 			}
 
 			run();
+
+			let scene = document.getElementById('grid');
+			let parallax = new Parallax(scene);
 		</script>
 		<meta charset="UTF-8">
 	</head>
 	<body>
-		<img class="runner" src="static/PLANETA.png">
-		<div class="grid-container">
-			<div class="kosmonaut">
-				<img class="lod" src="static/RAKETA.png">
+		<div class="grid-container" id="grid" data-selector=".wobble">
+			<div class="stars"></div>
+			<div class="twinkling"></div>
+			<div class="kosmonaut wobble">
+				<img class="planeta wobble" src="static/PLANETA.png" data-depth="0.3" style="height:172px">
+				<img class="lod wobble" src="static/RAKETA.png" data-depth="0.6" style="height:640px">
+				<img class="kosmik wobble" src="static/KOSMONAUT.png" data-depth="1.1">
 			</div>
 			<div class="symposion">
 				<h1>Sympozion 2019</h1>
 			</div>
-			<div class="pouto">
+			<div class="pouto wobble">
 				<h1>POUTO</h1>
 			</div>
 			<div class="obsach" id="obsah">
 				<p>loldsada</p>
 			</div>
 			<div class="ikonky">
-				<div class="half-ellipse"></div>
+				<div class="half-ellipse">
+					<img src="static/facebook.png" class="ikonka fb" onclick="window.location = 'https://facebook.com';">
+					<img src="static/instagram.png" class="ikonka ig" onclick="window.location = 'https://instagram.com';">
+					<img src="static/kepler.png" class="ikonka kp" onclick="window.location = 'https://gjk.cz';">
+				</div>
 			</div>
 		</div>
 	</body>
