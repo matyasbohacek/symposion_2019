@@ -12,7 +12,7 @@ body{
 	background: rgb(0,0,0);
 	background: radial-gradient(ellipse 320% 110% at bottom, rgba(0,28,122,1) 0%, rgba(0,0,0,1) 30%);
 	background-size: cover;
-	min-height: 100vh;
+	height: 100vh;
 	color: #EBD793;
 	padding: 0;
 	margin: 0;
@@ -29,7 +29,7 @@ div.bottom{
 }
 
 .grid-container {
-	min-height: 100vh;
+	height: 100vh;
 	display: grid;
 	grid-gap: 1em;
 	grid-template-columns: 1fr 1fr 1.25fr 1.25fr;
@@ -165,4 +165,21 @@ div.bottom{
 	justify-self: center;
 	left: 25%;
 	right: 25%;
+}
+
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+.rotating {
+/*	animation: spin 4s infinite linear;*/
 }
