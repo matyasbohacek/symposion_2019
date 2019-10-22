@@ -19,7 +19,7 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
         // N.B. query_selector returns Result<Option<Element>>
         // So, calling .ok() on that converts it to an Option<Option<Element>>
         // and hence, we must call .ok_or() twice.
-        .and_then(|d| d.query_selector("#obsah").ok())
+        .and_then(|d| d.query_selector(".smithy").ok())
         .ok_or(JsValue::NULL)?
         .ok_or(JsValue::NULL)
 }
@@ -38,13 +38,7 @@ pub fn start() -> Result<(), JsValue> {
     let root_element = get_root_element()?;
 
     let app = smithy::smd!(
-        <h1>Hello, Smithy!</h1>
-        <p>
-            Thank you for trying Smithy!
-        </p>
-        <p>
-            Take a look at <code>src/lib.rs</code>. Happy hacking!
-        </p>
+        <h1>uwu</h1>
     );
     smithy::mount(Box::new(app), root_element);
 
