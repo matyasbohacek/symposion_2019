@@ -1,11 +1,7 @@
-mod login;
 mod admin;
+mod login;
 
-use crate::{
-	db::*,
-	auth::login::*,
-	auth::admin::*,
-};
+use crate::{auth::admin::*, auth::login::*, db::*};
 
 // rocket imports
 use diesel::prelude::*;
@@ -15,9 +11,9 @@ use rocket::response::{NamedFile, Redirect};
 
 #[get("/admin?<login>")]
 pub(crate) fn admin(admin: AdminGuard, login: String) -> String {
-    if admin.0 == login{
+    if admin.0 == login {
         "congrats".to_string()
-    } else{
+    } else {
         "fuck off".to_string()
     }
 }
@@ -41,5 +37,5 @@ pub(crate) fn login_post(logindata: Form<Login>, db: Users, mut cookies: Cookies
 
 #[get("/login")]
 pub(crate) fn login() -> NamedFile {
-	NamedFile::open("www/login.html").unwrap()
+    NamedFile::open("www/login.html").unwrap()
 }

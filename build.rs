@@ -7,5 +7,8 @@ fn main() {
         println!("cargo:rustc-cfg=feature=\"backend\"");
     }
 
-    println!("cargo:warning={:?}", env::var_os("COMPILING_UNDER_CARGO_WEB"));
+    println!(
+        "cargo:warning={:?}",
+        env::var_os("COMPILING_UNDER_CARGO_WEB")
+    );
 }
