@@ -8,9 +8,9 @@ use rocket::http::{ContentType, Status};
 #[get("/harmonogram", format = "application/json")]
 pub fn harmonogram<'a>() -> Response<'a> {
 	if let (Ok(ctvrtek), Ok(patek), Ok(sobota)) =
-		(String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=1").stdout(Stdio::piped()).output().unwrap().stdout)
-		,String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=2").stdout(Stdio::piped()).output().unwrap().stdout)
-		,String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=3").stdout(Stdio::piped()).output().unwrap().stdout))
+		(String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=2").stdout(Stdio::piped()).output().unwrap().stdout)
+		,String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=3").stdout(Stdio::piped()).output().unwrap().stdout)
+		,String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=4").stdout(Stdio::piped()).output().unwrap().stdout))
 	{
 		Response::build()
 			.header(ContentType::JSON)
