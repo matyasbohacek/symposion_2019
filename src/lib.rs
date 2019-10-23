@@ -3,8 +3,17 @@
 #[macro_use]
 extern crate wasm_bindgen;
 
+use std::task::Poll;
+use std::future::Future;
+
 use wasm_bindgen::prelude::*;
 use web_sys::console;
+
+use serde::{Deserialize, Serialize};
+use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsCast;
+use wasm_bindgen_futures::JsFuture;
+use web_sys::{Request, RequestInit, RequestMode, Response};
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
@@ -24,13 +33,53 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
         .ok_or(JsValue::NULL)
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Harmonogram {
+	prirodovedci: Vec<(String, String, String, String, String, String, String)>,
+	humanities: Vec<(String, String, String, String, String, String, String)>,
+	praktici: Vec<(String, String, String, String, String, String, String)>,
+}
+
+pub async fn harmonogram() -> Result<Harmonogram, JsValue> {
+	let mut opts = RequestInit::new();
+	opts.method("GET");
+	opts.mode(RequestMode::Cors);
+
+	let req = Request::new_with_str_and_init(
+		"https://localhost:8000/harmonogram",
+		&opts
+	)?;
+
+	let window = web_sys::window().unwrap();
+	let resp_val = JsFuture::from(window.fetch_with_request(&req)).await?;
+
+	assert!(resp_val.is_instance_of::<Response>());
+	let resp: Response = resp_val.dyn_into().unwrap();
+
+	let json = JsFuture::from(resp.json()?).await?; 
+
+	let harmonogram: Harmonogram = json.into_serde().unwrap();
+
+	Ok(harmonogram)
+}
+
+
 // This is the entry point of your app
 #[wasm_bindgen(start)]
 pub fn start() -> Result<(), JsValue> {
     console::log_1(&JsValue::from_str(
         "Welcome to Smithy! Head to `src/lib.rs`. Happy hacking!",
     ));
-    // This provides better error messages in debug mode.
+
+	let h = loop {
+		match harmonogram().poll() {
+			Poll::Pending => (),
+			Poll::Ready(val) => break val.unwrap(),
+		};
+	};
+	//console::log_1(&JsValue::from_str(format!("{:?}")));
+
+	// This provides better error messages in debug mode.
     // It's disabled in release mode so it doesn't bloat up the file size.
     #[cfg(debug_assertions)]
     console_error_panic_hook::set_once();

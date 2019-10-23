@@ -5,16 +5,16 @@ use rocket::response::Response;
 use rocket::http::{ContentType, Status};
 
 /// Posílá informace z harmonogramové tabulky
-#[get("/harmonogram", format = "application/json")]
+#[get("/harmonogram")]
 pub fn harmonogram<'a>() -> Response<'a> {
-	if let (Ok(ctvrtek), Ok(patek), Ok(sobota)) =
+	if let (Ok(prirodovedci), Ok(humanities), Ok(praktici)) =
 		(String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=2&columns=false").stdout(Stdio::piped()).output().unwrap().stdout)
 		,String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=3&columns=false").stdout(Stdio::piped()).output().unwrap().stdout)
 		,String::from_utf8(Command::new("curl").arg("http://gsx2json.com/api?id=1PKzXl2buNNovjpGp6jK_YcVYZ-oEv8UmCSfNKvjtJX8&sheet=4&columns=false").stdout(Stdio::piped()).output().unwrap().stdout))
 	{
 		Response::build()
 			.header(ContentType::JSON)
-			.sized_body(Cursor::new(format!("{{ \"ctvrtek\": {}, \"patek\": {}, \"sobota\": {} }}", ctvrtek, patek, sobota)))
+			.sized_body(Cursor::new(format!("{{ \"prirodovedci\": {}, \"humanities\": {}, \"praktici\": {} }}", prirodovedci, humanities, praktici)))
 			.finalize()
 	} else {
 		Response::build()
@@ -22,5 +22,4 @@ pub fn harmonogram<'a>() -> Response<'a> {
 			.sized_body(Cursor::new("Internal Server Error"))
 			.finalize()
 	}
-
 }

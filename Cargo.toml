@@ -11,12 +11,16 @@ crate-type = ["cdylib", "rlib"]
 
 [features]
 backend = ["rocket", "diesel", "rocket_contrib"]
-frontend = ["smithy", "wasm-bindgen", "web-sys", "wee_alloc"]
+frontend = ["smithy", "wasm-bindgen", "web-sys", "wee_alloc", "wasm-bindgen-futures"]
 
 [dependencies]
 rocket = { version = "0.4.2", optional = true }
 diesel = { version = "1.4.3", features = ["sqlite"], optional = true }
 wasm-bindgen = { version = "0.2.48", features = ["nightly", "serde-serialize"], optional = true }
+wasm-bindgen-futures = { version = "0.4.1", optional = true }
+js-sys = { version = "0.3.28", optional = true }
+serde = { version = "*", features = ["derive"] }
+serde_derive = "*"
 smithy = { version = "0.0.7", features = [
   "mouse-events",
   "input-events",
@@ -24,10 +28,16 @@ smithy = { version = "0.0.7", features = [
 web-sys = { version = "0.3.22", features = [
   "console",
   "Element",
-  # "Window",
+  "Window",
+  "Headers",
+  "Request",
+  "RequestInit",
+  "RequestMode",
+  "Response",
   "Location",
 ], optional = true }
 wee_alloc = { version = "0.4.2", optional = true }
+reqwest = { version = "0.9.22", optional = true  }
 
 [dependencies.rocket_contrib]
 version = "0.4.2"
