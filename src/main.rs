@@ -12,7 +12,9 @@ extern crate diesel;
 mod auth;
 mod db;
 mod schema;
+mod harmonogram;
 mod static_server;
+
 
 fn main() {
     rocket::ignite()
@@ -25,6 +27,7 @@ fn main() {
                 static_server::styling,
                 static_server::static_files,
                 static_server::wasm_styling,
+                harmonogram::harmonogram,
                 auth::login,
                 auth::login_post,
                 auth::admin
