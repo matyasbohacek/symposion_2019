@@ -19,7 +19,7 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
         // N.B. query_selector returns Result<Option<Element>>
         // So, calling .ok() on that converts it to an Option<Option<Element>>
         // and hence, we must call .ok_or() twice.
-        .and_then(|d| d.query_selector(".smithy").ok())
+        .and_then(|d| d.query_selector("#modal-1-content").ok())
         .ok_or(JsValue::NULL)?
         .ok_or(JsValue::NULL)
 }
