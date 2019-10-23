@@ -71,12 +71,15 @@ pub fn start() -> Result<(), JsValue> {
         "Welcome to Smithy! Head to `src/lib.rs`. Happy hacking!",
     ));
 
-	let h = loop {
+	/*let h = loop {
 		match harmonogram().poll() {
 			Poll::Pending => (),
 			Poll::Ready(val) => break val.unwrap(),
 		};
-	};
+	};*/
+
+	 
+
 	//console::log_1(&JsValue::from_str(format!("{:?}")));
 
 	// This provides better error messages in debug mode.
