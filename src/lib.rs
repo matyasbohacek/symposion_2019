@@ -15,6 +15,9 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::{JsFuture, spawn_local};
 use web_sys::{Request, RequestInit, RequestMode, Response};
 
+use std::convert::From;
+use std::collections::HashMap;
+
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
 //
@@ -33,6 +36,8 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
         .ok_or(JsValue::NULL)
 }
 
+
+// Harmonogram tabulka
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Row {
 	anotace: Value,
@@ -42,6 +47,55 @@ pub struct Row {
 	cas_ok: Value,
 	stav: Value,
 	obor: Value,
+	korektura: Value,
+	#[serde(rename = "plánovanýčaspřednášky")]
+	cas: Value,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct TrueRow {
+	anotace: Option<String>,
+	jmeno: Option<String>,
+	cas_ok: bool,
+	stav: bool,
+	obor: Option<String>,
+	korektura: bool,
+	cas: Option<String>,
+}
+
+impl From<Row> for TrueRow {
+	fn from(src: Row) -> Self {
+		TrueRow {
+			anotace: match src.anotace {
+				Value::String(s) => Some(s),
+				_ => None,
+			},
+			jmeno: match src.jmeno {
+				Value::String(s) => Some(s),
+				_ => None,
+			},
+			cas_ok: match src.cas_ok {
+				Value::String(s) if s.as_str() == "Ano" => true,
+				_ => false,
+			},
+			stav: match src.stav {
+				Value::String(s) if s.as_str() == "Přijal" => true,
+				_ => false,
+			},
+			obor: match src.obor {
+				Value::String(s) => Some(s),
+				_ => None,
+			},
+			korektura: match src.korektura {
+				Value::String(s) if s.as_str() == "Provedena"  => true,
+				_ => false,
+			},
+			cas: match src.cas {
+				Value::String(s) => Some(s),
+				_ => None,
+			},
+		}
+	}
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -50,9 +104,20 @@ pub struct Container {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Harmonogram {
+pub struct HarmonogramTabulka {
 	prirodovedci: Container,
 	humanities: Container,
+}
+
+// Harmonogram real
+pub type Den = HashMap<String, Vec<TrueRow>>;
+
+#[wasm_bindgen]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Harmonogram {
+	ctvrtek: Den,
+	patek: Den,
+	sobota: Den,
 }
 
 pub async fn harmonogram() -> () {
@@ -73,9 +138,45 @@ pub async fn harmonogram() -> () {
 
 	let json = JsFuture::from(resp.json().unwrap()).await.unwrap(); 
 
-	console::log_1(&json);
+	let h: HarmonogramTabulka = json.into_serde().unwrap();
 
-	let harmonogram: Harmonogram = json.into_serde().unwrap();
+	let valid = h.prirodovedci.rows.iter()
+		.chain(h.humanities.rows.iter())
+		.map(|r| TrueRow::from(r.clone()))
+		.filter(|r| r.stav && r.cas_ok)
+		.collect::<Vec<TrueRow>>();
+		
+	let harmonogram = Harmonogram {
+		ctvrtek: valid.iter()
+			.fold(Den::new(), |mut acc, x|
+				if x.cas.clone().and_then(|c| if c.starts_with("ČT") { Some(()) } else { None }).is_some() {
+					acc.entry(x.cas.clone().unwrap().chars().skip(3).collect())
+						.and_modify(|e| e.push(x.clone()))
+						.or_insert(vec![x.clone()]);
+					acc
+				} else { acc }
+			),
+		patek: valid.iter()
+			.fold(Den::new(), |mut acc, x|
+				if x.cas.clone().and_then(|c| if c.starts_with("PÁ") { Some(()) } else { None }).is_some() {
+					acc.entry(x.cas.clone().unwrap().chars().skip(3).collect())
+						.and_modify(|e| e.push(x.clone()))
+						.or_insert(vec![x.clone()]);
+					acc
+				} else { acc }
+			),
+		sobota: valid.iter()
+			.fold(Den::new(), |mut acc, x|
+				if x.cas.clone().and_then(|c| if c.starts_with("SO") { Some(()) } else { None }).is_some() {
+					acc.entry(x.cas.clone().unwrap().chars().skip(3).collect())
+						.and_modify(|e| e.push(x.clone()))
+						.or_insert(vec![x.clone()]);
+					acc
+				} else { acc }
+			),
+	};
+
+	console::log_1(&JsValue::from_serde(&harmonogram).unwrap());
 
     let root_element = get_root_element().unwrap();
 
