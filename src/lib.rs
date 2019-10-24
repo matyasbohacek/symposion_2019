@@ -18,6 +18,9 @@ use web_sys::{Request, RequestInit, RequestMode, Response};
 use std::convert::From;
 use std::collections::HashMap;
 
+use smithy::smd;
+use smithy::types::{Node, Component};
+
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
 // allocator.
 //
@@ -50,6 +53,8 @@ pub struct Row {
 	korektura: Value,
 	#[serde(rename = "plánovanýčaspřednášky")]
 	cas: Value,
+	#[serde(rename = "názevpřednášky")]
+	nazev: Value,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -61,6 +66,7 @@ pub struct TrueRow {
 	obor: Option<String>,
 	korektura: bool,
 	cas: Option<String>,
+	nazev: Option<String>,
 }
 
 impl From<Row> for TrueRow {
@@ -94,6 +100,10 @@ impl From<Row> for TrueRow {
 				Value::String(s) => Some(s),
 				_ => None,
 			},
+			nazev: match src.nazev {
+				Value::String(s) => Some(s),
+				_ => None,
+			}
 		}
 	}
 }
@@ -110,7 +120,43 @@ pub struct HarmonogramTabulka {
 }
 
 // Harmonogram real
-pub type Den = HashMap<String, Vec<TrueRow>>;
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Den(HashMap<String, Vec<TrueRow>>);
+
+impl Den {
+	pub fn new() -> Den {
+		Den(HashMap::new())
+	}
+}
+
+impl Component for Den {
+	fn render(&mut self) -> Node {
+		let mut list = self.0.iter().map(|(a, b)| (a.clone(), b.clone())).collect::<Vec<(String, Vec<TrueRow>)>>();
+		list.sort_by(|a, b| a.0.cmp(&b.0));
+ 
+		smd!(
+			<table>
+				{
+					list.iter().cloned().map(|x| smd!(
+						<tr>
+							<th>{x.0.clone()}</th>
+
+							{ x.1.iter().cloned().map(|y| smd!(
+									<td>
+										<p>{y.jmeno.clone()}</p>
+										<p>{y.obor.clone()}</p>
+										<p>{y.nazev.clone()}</p>
+									</td>
+								)).collect::<Vec<_>>()
+							}
+						</tr>
+					)).collect::<Vec<_>>()
+				}
+			</table>
+		).render()
+	}
+}
+
 
 #[wasm_bindgen]
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -118,6 +164,19 @@ pub struct Harmonogram {
 	ctvrtek: Den,
 	patek: Den,
 	sobota: Den,
+}
+
+impl Component for Harmonogram {
+	fn render(&mut self) -> Node {
+		smd!(
+			<h1>Čtvrtek</h1>
+			{ self.ctvrtek.clone() }
+			<h1>Pátek</h1>
+			{ self.patek.clone() }
+			<h1>Sobota</h1>
+			{ self.sobota.clone() }
+		).render()
+	}
 }
 
 pub async fn harmonogram() -> () {
@@ -150,7 +209,7 @@ pub async fn harmonogram() -> () {
 		ctvrtek: valid.iter()
 			.fold(Den::new(), |mut acc, x|
 				if x.cas.clone().and_then(|c| if c.starts_with("ČT") { Some(()) } else { None }).is_some() {
-					acc.entry(x.cas.clone().unwrap().chars().skip(3).collect())
+					acc.0.entry(x.cas.clone().unwrap().chars().skip(3).collect())
 						.and_modify(|e| e.push(x.clone()))
 						.or_insert(vec![x.clone()]);
 					acc
@@ -159,7 +218,7 @@ pub async fn harmonogram() -> () {
 		patek: valid.iter()
 			.fold(Den::new(), |mut acc, x|
 				if x.cas.clone().and_then(|c| if c.starts_with("PÁ") { Some(()) } else { None }).is_some() {
-					acc.entry(x.cas.clone().unwrap().chars().skip(3).collect())
+					acc.0.entry(x.cas.clone().unwrap().chars().skip(3).collect())
 						.and_modify(|e| e.push(x.clone()))
 						.or_insert(vec![x.clone()]);
 					acc
@@ -168,7 +227,7 @@ pub async fn harmonogram() -> () {
 		sobota: valid.iter()
 			.fold(Den::new(), |mut acc, x|
 				if x.cas.clone().and_then(|c| if c.starts_with("SO") { Some(()) } else { None }).is_some() {
-					acc.entry(x.cas.clone().unwrap().chars().skip(3).collect())
+					acc.0.entry(x.cas.clone().unwrap().chars().skip(3).collect())
 						.and_modify(|e| e.push(x.clone()))
 						.or_insert(vec![x.clone()]);
 					acc
@@ -181,7 +240,7 @@ pub async fn harmonogram() -> () {
     let root_element = get_root_element().unwrap();
 
     let app = smithy::smd!(
-        <h1>uwu</h1>
+		{ harmonogram.clone() }
     );
     smithy::mount(Box::new(app), root_element);
 }
