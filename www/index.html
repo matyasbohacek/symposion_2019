@@ -51,12 +51,8 @@ Pouto je síla, která drží velké i ty nejmenší věci pohromadě.<br>
 					</h3>
 				</div>
 				<div class="smithy">
-					<button class="modal__btn-primary" data-micromodal-trigger="modal-1">Harmonogram</button>
-				</div>
-				<div class="harmonogram-button" id="harmonogram">
-				</div>
-				<div class="mapa" id="mapa">
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2559.914628929994!2d14.38511141518236!3d50.08788522130457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b951a7d704bb3%3A0x844434940488c41e!2zUGFybMOpxZlvdmEgMTE4LzIsIDE2OSAwMCBQcmFoYSA2LUhyYWTEjWFueQ!5e0!3m2!1sen!2scz!4v1571811610988!5m2!1sen!2scz" height="450" frameborder="0" style="border:0;width:90%" allowfullscreen=""></iframe>
+					<button class="modal__btn modal__btn-primary" data-micromodal-trigger="modal-1" style="pointer-events: auto;">Harmonogram</button>
+					<button class="modal__btn modal__btn-primary" data-micromodal-trigger="modal-2" style="pointer-events: auto;">Mapa</button>
 				</div>
 			</div>
 			<div class="ikonky">
@@ -75,7 +71,7 @@ Pouto je síla, která drží velké i ty nejmenší věci pohromadě.<br>
 				<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 					<header class="modal__header">
 						<h2 class="modal__title" id="modal-1-title">
-							Micromodal
+							Harmonogram
 						</h2>
 						<button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
 					</header>
@@ -83,6 +79,28 @@ Pouto je síla, která drží velké i ty nejmenší věci pohromadě.<br>
 						<p>
 						Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
 						</p>
+					</main>
+					<footer class="modal__footer">
+						<button class="modal__btn modal__btn-primary">Continue</button>
+						<button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+					</footer>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal micromodal-slide" id="modal-2" aria-hidden="true">
+			<div class="modal__overlay" tabindex="-1" data-micromodal-close>
+				<div class="modal__container modal-w" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
+					<header class="modal__header">
+						<h2 class="modal__title" id="modal-2-title">
+							Mapa
+						</h2>
+						<button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+					</header>
+					<main class="modal__content" id="modal-2-content">
+						<div class="mapa" id="mapa">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2559.914628929994!2d14.38511141518236!3d50.08788522130457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b951a7d704bb3%3A0x844434940488c41e!2zUGFybMOpxZlvdmEgMTE4LzIsIDE2OSAwMCBQcmFoYSA2LUhyYWTEjWFueQ!5e0!3m2!1sen!2scz!4v1571811610988!5m2!1sen!2scz" height="450" frameborder="0" style="border:0;width:65vw !important" allowfullscreen=""></iframe>
+						</div>
 					</main>
 					<footer class="modal__footer">
 						<button class="modal__btn modal__btn-primary">Continue</button>

@@ -2,17 +2,17 @@
 #![cfg(feature = "frontend")]
 #[macro_use]
 extern crate wasm_bindgen;
-
-use std::task::Poll;
-use std::future::Future;
+extern crate serde_json;
 
 use wasm_bindgen::prelude::*;
 use web_sys::console;
 
+use serde_json::Value;
+
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use wasm_bindgen_futures::JsFuture;
+use wasm_bindgen_futures::{JsFuture, spawn_local};
 use web_sys::{Request, RequestInit, RequestMode, Response};
 
 // When the `wee_alloc` feature is enabled, this uses `wee_alloc` as the global
@@ -34,33 +34,55 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Harmonogram {
-	prirodovedci: Vec<(String, String, String, String, String, String, String)>,
-	humanities: Vec<(String, String, String, String, String, String, String)>,
-	praktici: Vec<(String, String, String, String, String, String, String)>,
+pub struct Row {
+	anotace: Value,
+	#[serde(rename = "jménohosta")]
+	jmeno: Value,
+	#[serde(rename = "sedíčas")]
+	cas_ok: Value,
+	stav: Value,
+	obor: Value,
 }
 
-pub async fn harmonogram() -> Result<Harmonogram, JsValue> {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Container {
+	rows: Vec<Row>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Harmonogram {
+	prirodovedci: Container,
+	humanities: Container,
+}
+
+pub async fn harmonogram() -> () {
 	let mut opts = RequestInit::new();
 	opts.method("GET");
 	opts.mode(RequestMode::Cors);
 
 	let req = Request::new_with_str_and_init(
-		"https://localhost:8000/harmonogram",
+		"/harmonogram",
 		&opts
-	)?;
+	).unwrap();
 
 	let window = web_sys::window().unwrap();
-	let resp_val = JsFuture::from(window.fetch_with_request(&req)).await?;
+	let resp_val = JsFuture::from(window.fetch_with_request(&req)).await.unwrap();
 
 	assert!(resp_val.is_instance_of::<Response>());
 	let resp: Response = resp_val.dyn_into().unwrap();
 
-	let json = JsFuture::from(resp.json()?).await?; 
+	let json = JsFuture::from(resp.json().unwrap()).await.unwrap(); 
+
+	console::log_1(&json);
 
 	let harmonogram: Harmonogram = json.into_serde().unwrap();
 
-	Ok(harmonogram)
+    let root_element = get_root_element().unwrap();
+
+    let app = smithy::smd!(
+        <h1>uwu</h1>
+    );
+    smithy::mount(Box::new(app), root_element);
 }
 
 
@@ -71,32 +93,10 @@ pub fn start() -> Result<(), JsValue> {
         "Welcome to Smithy! Head to `src/lib.rs`. Happy hacking!",
     ));
 
-	/*let h = loop {
-		match harmonogram().poll() {
-			Poll::Pending => (),
-			Poll::Ready(val) => break val.unwrap(),
-		};
-	};*/
-
-	 
-
-	//console::log_1(&JsValue::from_str(format!("{:?}")));
-
 	// This provides better error messages in debug mode.
     // It's disabled in release mode so it doesn't bloat up the file size.
-    #[cfg(debug_assertions)]
     console_error_panic_hook::set_once();
 
-    let root_element = get_root_element()?;
-
-    let app = smithy::smd!(
-        <h1>uwu</h1>
-    );
-    smithy::mount(Box::new(app), root_element);
-
-    console::log_1(&JsValue::from_str(
-        "Welcome to Smithy! Head to `src/lib.rs`. Happy hacking!",
-    ));
-
-    Ok(())
+	spawn_local(harmonogram());
+	Ok(())
 }

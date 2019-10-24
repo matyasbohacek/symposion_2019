@@ -209,3 +209,7 @@ div.bottom{
 .rotating {
 /*	animation: spin 4s infinite linear;*/
 }
+
+.modal-w {
+	max-width: 70vw !important;
+}
