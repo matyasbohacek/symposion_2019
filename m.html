@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:100&display=swap" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="style/m/index.css">
+		<link rel="stylesheet" type="text/css" href="style/roadrunner.css">
+		<link rel="stylesheet" type="text/css" href="style/m/twinkle.css">
+		<link rel="stylesheet" type="text/css" href="style/m/micromodal.css">
+		<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+		<script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+		<script type="module">
+			import init from './pkg/symposion_2019.js';
+
+			async function run() {
+			await init();
+			}
+
+			run();
+
+			let scene = document.getElementById('grid');
+			let parallax = new Parallax(scene)
+			MicroModal.init();;
+		</script>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+
+    <div class="stars">
+
+
+			<div class="obsach" id="obsah">
+        <div class="symposion">
+  				<h1 style="margin-block-end: -0.75em; margin-left: -0.1em;">Symposion 2019</h1>
+  			</div>
+
+				<div class="pouto wobble">
+					<h1 style="margin-block-start: 0em; margin-block-end: 0em; margin: 0; margin-left: -0.1em;">POUTO</h1>
+				</div>
+
+				<div class="popis">
+					<h3>
+            Pouto je nástroj, který stanovuje hranice, diktuje pravidla a brání změnám. <br>
+            Pouto je okov, který nás omezuje, proti němuž se bouříme a který bývá přetrhán.<br>
+            Pouto je překážka, která brání kontaktu.<br>
+            Pouto je to nechtěné, co poutá i to, co nemá být poutáno, způsobuje, že se necítíme svobodně.<br>
+            Pouto je vazba, svazek, vztah, spojení, které vytváří celek složený z neoddělitelných částí.<br>
+            Pouto je síla, která drží velké i ty nejmenší věci pohromadě.<br>
+					</h3>
+				</div>
+
+        <div class="smithy">
+          <button class="modal__btn modal__btn-primary" data-micromodal-trigger="modal-1">Harmonogram</button>
+        </div>
+        <div class="harmonogram-button" id="harmonogram">
+        </div>
+        <div class="mapa" id="mapa">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2559.914628929994!2d14.38511141518236!3d50.08788522130457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b951a7d704bb3%3A0x844434940488c41e!2zUGFybMOpxZlvdmEgMTE4LzIsIDE2OSAwMCBQcmFoYSA2LUhyYWTEjWFueQ!5e0!3m2!1sen!2scz!4v1571811610988!5m2!1sen!2scz" height="450" frameborder="0" style="border:0px solid; border-radius: .6rem; width:100%; margin-top: 2em; margin-bottom: 4em;" allowfullscreen=""></iframe>
+        </div>
+
+        <div class="ikonky">
+  				<div class="half-ellipse">
+  					<img src="static/facebook.png" class="ikonka rotating fb" onclick="window.location = 'https://facebook.com';">
+  					<img src="static/instagram.png" class="ikonka rotating ig" onclick="window.location = 'https://instagram.com';">
+  					<img src="static/kepler.png" class="ikonka rotating kp" onclick="window.location = 'https://gjk.cz';">
+  					<img src="static/git.png" class="ikonka rotating gt" onclick="window.location = 'https://github.com/Dawidkubis/sympozion_2019';">
+  				<img src="static/mesic.png" class="mesic">
+  				</div>
+  			</div>
+
+      </div>
+
+    </div>
+	</body>
+</html>
