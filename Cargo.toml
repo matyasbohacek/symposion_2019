@@ -11,7 +11,7 @@ crate-type = ["cdylib", "rlib"]
 
 [features]
 backend = ["rocket", "diesel", "rocket_contrib"]
-frontend = ["smithy", "wasm-bindgen", "web-sys", "wee_alloc", "wasm-bindgen-futures", "executor"]
+frontend = ["smithy", "wasm-bindgen", "web-sys", "wee_alloc", "wasm-bindgen-futures", "executor", "stdweb"]
 
 [dependencies]
 rocket = { version = "0.4.2", optional = true }
@@ -39,7 +39,8 @@ web-sys = { version = "0.3.22", features = [
 ], optional = true }
 wee_alloc = { version = "0.4.2", optional = true }
 reqwest = { version = "0.9.22", optional = true }
-executor = { version = "0.0.5", optional = true  }
+executor = { version = "0.0.5", optional = true }
+stdweb = { version = "*", optional = true }
 
 [dependencies.rocket_contrib]
 version = "0.4.2"

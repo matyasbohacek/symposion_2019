@@ -3,8 +3,10 @@
 #[macro_use]
 extern crate wasm_bindgen;
 extern crate serde_json;
+extern crate smithy;
 
 use wasm_bindgen::prelude::*;
+use stdweb::js;
 use web_sys::console;
 
 use serde_json::Value;
@@ -16,6 +18,7 @@ use wasm_bindgen_futures::{JsFuture, spawn_local};
 use web_sys::{Request, RequestInit, RequestMode, Response};
 
 use std::convert::From;
+use std::string::ToString;
 use std::collections::HashMap;
 
 use smithy::smd;
@@ -39,6 +42,17 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
         .ok_or(JsValue::NULL)
 }
 
+fn get_modal_element() -> Result<web_sys::Element, JsValue> {
+    web_sys::window()
+        .and_then(|w| w.document())
+        // N.B. query_selector returns Result<Option<Element>>
+        // So, calling .ok() on that converts it to an Option<Option<Element>>
+        // and hence, we must call .ok_or() twice.
+        .and_then(|d| d.query_selector(".prednaska_modal").ok())
+        .ok_or(JsValue::NULL)?
+        .ok_or(JsValue::NULL)
+}
+
 
 // Harmonogram tabulka
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -55,6 +69,9 @@ pub struct Row {
 	cas: Value,
 	#[serde(rename = "názevpřednášky")]
 	nazev: Value,
+	medailonek: Value,
+	#[serde(rename = "místnost")]
+	mistnost: Value,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -67,6 +84,8 @@ pub struct TrueRow {
 	korektura: bool,
 	cas: Option<String>,
 	nazev: Option<String>,
+	medailonek: Option<String>,
+	mistnost: Option<String>,
 }
 
 impl From<Row> for TrueRow {
@@ -103,6 +122,14 @@ impl From<Row> for TrueRow {
 			nazev: match src.nazev {
 				Value::String(s) => Some(s),
 				_ => None,
+			},
+			medailonek: match src.medailonek {
+				Value::String(s) => Some(s),
+				_ => None,
+			},
+			mistnost: match src.mistnost {
+				Value::String(s)=> Some(s),
+				_ => None,
 			}
 		}
 	}
@@ -129,6 +156,30 @@ impl Den {
 	}
 }
 
+fn trim_lol<T: ToString>(s: T) -> String {
+	let tmp = s.to_string()
+		.replace(" ", "")
+		.replace("ě", "-")
+		.replace("š", "-")
+		.replace("č", "-")
+		.replace("ř", "-")
+		.replace("ž", "-")
+		.replace("ý", "-")
+		.replace("á", "-")
+		.replace("í", "-")
+		.replace("é", "-")
+		.replace("ň", "-")
+		.replace("ó", "-")
+		.replace("ď", "-")
+		.replace("ť", "-")
+		.replace("ś", "-")
+		.replace("ů", "-")
+		.replace("ú", "-")
+	;
+
+	tmp.to_lowercase()
+}
+
 impl Component for Den {
 	fn render(&mut self) -> Node {
 		let mut list = self.0.iter().map(|(a, b)| (a.clone(), b.clone())).collect::<Vec<(String, Vec<TrueRow>)>>();
@@ -142,9 +193,31 @@ impl Component for Den {
 							<th>{x.0.clone()}</th>
 
 							{ x.1.iter().cloned().map(|y| smd!(
-									<td>
-										<p class="prednasejici">{y.jmeno.clone()}</p>
-										<p class="nazev-prednasky">{y.nazev.clone()}</p>
+									<td class="prednaska">
+										<div class="prednaska-hover" onclick={format!("MicroModal.show('{}');", trim_lol(&y.jmeno.clone().unwrap_or_default()))}>
+											<p class="prednasejici">{y.jmeno.clone()}</p>
+											<p class="nazev-prednasky">{y.nazev.clone()}</p>
+										</div>
+										<div class="modal micromodal-slide" id={trim_lol(&y.jmeno.clone().unwrap_or_default())}>
+											<div class="modal__overlay" tabindex="-1">
+												<div class="modal__container" role="dialog">
+													<header class="modal__header">
+														<h2 class="modal__title">
+															{y.nazev.clone()}, 
+															 Místnost: {y.mistnost.clone()}
+														</h2>
+														<button class="modal__close" onclick={format!("MicroModal.close('{}');", trim_lol(&y.jmeno.clone().unwrap_or_default()))}>
+														</button>
+													</header>
+													<main class="modal__content">
+														<h3>{y.jmeno.clone()}</h3>
+														<i>{y.obor.clone()}</i><br></br><br></br>
+														<i>{y.medailonek.clone()}</i><br></br>
+														<b>{y.anotace.clone()}</b>
+													</main>
+												</div>
+											</div>
+										</div>
 									</td>
 								)).collect::<Vec<_>>()
 							}

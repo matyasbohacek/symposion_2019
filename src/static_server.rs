@@ -1,4 +1,5 @@
 use rocket::response::NamedFile;
+use std::path::{PathBuf, Path};
 
 #[get("/")]
 pub(crate) fn index() -> NamedFile {
@@ -15,9 +16,9 @@ pub(crate) fn static_files(file: String) -> Option<NamedFile> {
     NamedFile::open(format!("static/{}", file)).ok()
 }
 
-#[get("/pkg/<file>")]
-pub(crate) fn wasm_styling(file: String) -> Option<NamedFile> {
-    NamedFile::open(format!("pkg/{}", file)).ok()
+#[get("/pkg/<file..>", rank = 0)]
+pub fn wasm_styling(file: PathBuf) -> Option<NamedFile> {
+	NamedFile::open(Path::new("pkg/").join(file)).ok()
 }
 
 #[catch(404)]

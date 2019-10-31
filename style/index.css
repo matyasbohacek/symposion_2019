@@ -248,6 +248,10 @@ div.bottom{
 	pointer-events: auto;
 }
 
+.harmonogtam-tabulka * {
+	pointer-events: auto !important;
+}
+
 .harmonogram-tabulka th:first-child {
 	border-right: 0.125em dashed #eee;
 	border-bottom: 0.125em dashed #eee;
@@ -267,9 +271,21 @@ div.bottom{
 	background-color: #222;
 }
 
-.harmonogram-tabulka th:hover, .harmonogram-tabulka td:hover {
-	background-color: #222,
-	transform: scale(1.125),
+.harmonogra-tabulka .modal:hover {
+	transform:none !important;
+	cursor: auto !important;
+	border-radius: 3px !important;
+}
+
+.prednaska-hover {
+	transition: 0.3s;
+}
+
+.prednaska-hover:hover {
+	background-color: #303035;
+	transform: scale(1.125);
+	cursor: pointer;
+	border-radius: 7px;
 }
 
 .prednasejici {
