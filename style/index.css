@@ -242,3 +242,40 @@ div.bottom{
 .modal-w {
 	max-width: 70vw !important;
 }
+
+.harmonogram-tabulka  {
+	transition: .3s;
+	pointer-events: auto;
+}
+
+.harmonogram-tabulka th:first-child {
+	border-right: 0.125em dashed #eee;
+	border-bottom: 0.125em dashed #eee;
+}
+
+.harmonogram-tabulka th, .harmonogram-tabulka td {
+	padding: 0.5em;
+	pointer-events: auto;
+}
+
+.harmonogram-tabulka tr:last-child th {
+	border-top: none !important;
+	border-bottom: none !important;
+}
+
+.harmonogram-tabulka td {
+	background-color: #222;
+}
+
+.harmonogram-tabulka th:hover, .harmonogram-tabulka td:hover {
+	background-color: #222,
+	transform: scale(1.125),
+}
+
+.prednasejici {
+	font-weight: 700;
+}
+
+.nazev-prednasky {
+	font-style: italic;
+}

@@ -143,9 +143,8 @@ impl Component for Den {
 
 							{ x.1.iter().cloned().map(|y| smd!(
 									<td>
-										<p>{y.jmeno.clone()}</p>
-										<p>{y.obor.clone()}</p>
-										<p>{y.nazev.clone()}</p>
+										<p class="prednasejici">{y.jmeno.clone()}</p>
+										<p class="nazev-prednasky">{y.nazev.clone()}</p>
 									</td>
 								)).collect::<Vec<_>>()
 							}
