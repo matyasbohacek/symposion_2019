@@ -10,17 +10,21 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
 		<script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
 		<script type="module">
-			import init from './pkg/symposion_2019.js';
+			// WASM shity
+			import init, {harmonogram_json} from './pkg/symposion_2019.js';
 
 			async function run() {
-			await init();
+				await init();
 			}
 
 			run();
 
+			window.harmonogram_json = harmonogram_json;
+
+			// Parallax a MicroModal
 			let scene = document.getElementById('grid');
-			let parallax = new Parallax(scene)
-			MicroModal.init();;
+			let parallax = new Parallax(scene);
+			MicroModal.init();
 		</script>
 		<meta charset="UTF-8">
 	</head>
@@ -29,8 +33,8 @@
 			<div class="stars"></div>
 			<div class="twinkling"></div>
 			<div class="kosmonaut wobble">
-				<img class="planeta wobble" src="static/PLANETA.png" data-depth="0.3" style="height:172px">
-				<img class="lod wobble" src="static/RAKETA.png" data-depth="0.6" style="height:640px">
+				<img class="planeta wobble" src="static/PLANETA.png" data-depth="0.3">
+				<img class="lod wobble" src="static/RAKETA.png" data-depth="0.6">
 				<img class="kosmik wobble" src="static/KOSMONAUT.png" data-depth="1.1">
 			</div>
 			<div class="symposion">
@@ -42,17 +46,17 @@
 			<div class="obsach" id="obsah">
 				<div class="popis">
 					<h3>
-Pouto je nástroj, který stanovuje hranice, diktuje pravidla a brání změnám. <br>
-Pouto je okov, který nás omezuje, proti němuž se bouříme a který bývá přetrhán.<br>
-Pouto je překážka, která brání kontaktu.<br>
-Pouto je to nechtěné, co poutá i to, co nemá být poutáno, způsobuje, že se necítíme svobodně.<br>
-Pouto je vazba, svazek, vztah, spojení, které vytváří celek složený z neoddělitelných částí.<br>
-Pouto je síla, která drží velké i ty nejmenší věci pohromadě.<br>
+🔗 POUTO je nástroj, který stanovuje hranice, diktuje pravidla a brání změnám. <br>
+🔗 POUTO je okov, který nás omezuje, proti němuž se bouříme a který bývá přetrhán.<br>
+🔗 POUTO je překážka, která brání kontaktu.<br>
+🔗 POUTO je to nechtěné, co poutá i to, co nemá být poutáno, způsobuje, že se necítíme svobodně.<br>
+🔗 POUTO je vazba, svazek, vztah, spojení, které vytváří celek složený z neoddělitelných částí.<br>
+🔗 POUTO je síla, která drží velké i ty nejmenší věci pohromadě.<br>
 					</h3>
 				</div>
 				<div class="smithy">
-					<button class="modal__btn modal__btn-primary" data-micromodal-trigger="modal-1" style="pointer-events: auto;">Harmonogram</button>
-					<button class="modal__btn modal__btn-primary" data-micromodal-trigger="modal-2" style="pointer-events: auto;">Mapa</button>
+					<button class="modal__btn modal__btn-primary harmonogram-btn" data-micromodal-trigger="modal-1" style="pointer-events: auto;">Harmonogram</button>
+					<button class="modal__btn modal__btn-primary mapa-btn" data-micromodal-trigger="modal-2" style="pointer-events: auto;">Mapa</button>
 				</div>
 			</div>
 			<div class="ikonky">
@@ -66,18 +70,18 @@ Pouto je síla, která drží velké i ty nejmenší věci pohromadě.<br>
 			</div>
 		</div>
 
-		<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+		<div class="modal micromodal-slide" id="modal-1">
 			<div class="modal__overlay" tabindex="-1" data-micromodal-close>
-				<div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+				<div class="modal__container" role="dialog">
 					<header class="modal__header">
 						<h2 class="modal__title" id="modal-1-title">
 							Harmonogram
 						</h2>
-						<button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+						<button class="modal__close" data-micromodal-close></button>
 					</header>
 					<main class="modal__content harmonogram-tabulka" id="modal-1-content">
 						<p>
-						Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
+							Načítání harmonogramu...
 						</p>
 					</main>
 					<footer class="modal__footer">

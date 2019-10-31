@@ -38,8 +38,14 @@ div.bottom{
 	grid-template-areas: "symposion . pouto pouto" "kosmonaut kosmonaut obsach obsach" "kosmonaut kosmonaut obsach obsach" "ikonky ikonky ikonky ikonky";
 }
 
+@media only screen and (max-height: 850px) {
+	.grid-container {
+		grid-template-areas: "symposion . pouto pouto" "kosmonaut kosmonaut obsach obsach" "kosmonaut kosmonaut obsach obsach" "ikonky ikonky . .";
+	}
+}
+
 .symposion {
-	padding: 2em;
+	padding: 2.4vh;
 	grid-area: symposion;
 	place-self: center;
 	display: grid;
@@ -50,6 +56,7 @@ div.bottom{
 	display: grid;
 	letter-spacing: 1v;
 	text-transform: uppercase;
+	font-size: 4vh;
 }
 
 .kosmonaut {
@@ -70,10 +77,14 @@ div.bottom{
 	grid-area: pouto;
 	place-self: center;
 	color: #ef5b41;
-	font-size: 3em;
+	font-size: 4vh;
 	font-weight: normal;
 	letter-spacing: .3em;
 	z-index: 1;
+}
+
+.pouto h1 {
+	padding-bottom: 1em;
 }
 
 .obsach {
@@ -122,15 +133,14 @@ div.bottom{
 }
 
 .ikonka {
-	padding-top: 1.5em;
 	object-fit: scale-down;
 	height: 7vh;
 	justify-self: center;
 	cursor: pointer;
 	pointer-events: auto;
 	z-index: 1200;
-	padding-left: 2em;
-	padding-right: 2em;
+	padding-left: 4vh;
+	padding-right: 4vh;
 }
 
 .fb {
@@ -193,7 +203,7 @@ div.bottom{
 	object-fit: cover;
 	object-position: center top;
 	min-width: 100%;
-	max-height: 14vh;
+	max-height: 19vh;
 	justify-self: center;
 	left: 25%;
 	right: 25%;
@@ -208,9 +218,8 @@ div.bottom{
 }
 
 .harmonogram-btn, .mapa-btn {
-	padding: 1em !important;
+	padding: 3vh !important;
 	margin: 1em !important;
-	height: 5em !important;
 	font-size: 2em !important;
 	color: #fff !important;
 	background-color: #222 !important;
@@ -225,7 +234,12 @@ div.bottom{
 }
 
 .popis {
-	line-height: 2;
+	line-height: 1.75;
+	padding-right: 1vh;
+}
+
+.popis {
+	font-size: min(2vh, 10px);
 }
 
 @-moz-keyframes spin {
