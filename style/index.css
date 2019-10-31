@@ -193,6 +193,35 @@ div.bottom{
 	right: 25%;
 }
 
+.smithy {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr;
+	grid-template-areas: "harmonogram-btn mapa-btn";
+}
+
+.harmonogram-btn, .mapa-btn {
+	padding: 1em !important;
+	margin: 1em !important;
+	height: 5em !important;
+	font-size: 2em !important;
+	color: #fff !important;
+	background-color: #222 !important;
+	border-color: #fff !important;
+	border-style: dashed !important;
+	border-width: 0.25em !important;
+}
+
+.harmonogram-btn:hover, .mapa-btn:hover {
+	border-width: 0.2em !important;
+	background-color: #333 !important;
+}
+
+.popis {
+	line-height: 2;
+}
+
 @-moz-keyframes spin {
     from { -moz-transform: rotate(0deg); }
     to { -moz-transform: rotate(360deg); }
