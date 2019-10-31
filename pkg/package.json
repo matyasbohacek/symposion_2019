@@ -1,0 +1,16 @@
+{
+  "name": "symposion_2019",
+  "collaborators": [
+    "Dawid J. Kubis <dawid.kubis3@gmail.com>",
+    "Lukáš Hozda <luk.hozda@gmail.com>"
+  ],
+  "version": "0.69.0",
+  "files": [
+    "symposion_2019_bg.wasm",
+    "symposion_2019.js",
+    "symposion_2019.d.ts"
+  ],
+  "module": "symposion_2019.js",
+  "types": "symposion_2019.d.ts",
+  "sideEffects": "false"
+}
