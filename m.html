@@ -10,14 +10,15 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
 		<script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
 		<script type="module">
-			import init from './pkg/symposion_2019.js';
-
+      // WASM
+			import init, {harmonogram_json} from './pkg/symposion_2019.js';
 			async function run() {
-			await init();
+				await init();
 			}
-
 			run();
+			window.harmonogram_json = harmonogram_json;
 
+      // Parallax and MicroModal
 			let scene = document.getElementById('grid');
 			let parallax = new Parallax(scene)
 			MicroModal.init();;
