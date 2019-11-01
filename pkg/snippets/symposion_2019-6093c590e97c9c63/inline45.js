@@ -1,0 +1,1 @@
+export function __cargo_web_snippet_06c76c1a195ca3237b1498b1281b254c9bd7bd62(Module, $0) { $0 = Module.STDWEB_PRIVATE.to_js($0);MicroModal.open(($0)) }

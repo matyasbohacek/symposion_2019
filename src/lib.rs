@@ -6,7 +6,6 @@ extern crate serde_json;
 extern crate smithy;
 
 use wasm_bindgen::prelude::*;
-use stdweb::js;
 use web_sys::console;
 
 use serde_json::Value;
@@ -17,6 +16,9 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::{JsFuture, spawn_local};
 use web_sys::{Request, RequestInit, RequestMode, Response};
 
+use std::thread;
+use std::sync::Once;
+use std::time::Duration;
 use std::convert::From;
 use std::string::ToString;
 use std::collections::HashMap;
@@ -41,18 +43,6 @@ fn get_root_element() -> Result<web_sys::Element, JsValue> {
         .ok_or(JsValue::NULL)?
         .ok_or(JsValue::NULL)
 }
-
-fn get_modal_element() -> Result<web_sys::Element, JsValue> {
-    web_sys::window()
-        .and_then(|w| w.document())
-        // N.B. query_selector returns Result<Option<Element>>
-        // So, calling .ok() on that converts it to an Option<Option<Element>>
-        // and hence, we must call .ok_or() twice.
-        .and_then(|d| d.query_selector(".prednaska_modal").ok())
-        .ok_or(JsValue::NULL)?
-        .ok_or(JsValue::NULL)
-}
-
 
 // Harmonogram tabulka
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -156,6 +146,7 @@ impl Den {
 	}
 }
 
+/// slugify kinda
 fn trim_lol<T: ToString>(s: T) -> String {
 	let tmp = s.to_string()
 		.replace(" ", "")
@@ -251,6 +242,9 @@ impl Component for Harmonogram {
 	}
 }
 
+pub static mut HM: Option<Harmonogram> = None;
+pub static HARM_LOCK: Once = Once::new();
+
 pub async fn harmonogram() -> () {
 	let mut opts = RequestInit::new();
 	opts.method("GET");
@@ -309,12 +303,28 @@ pub async fn harmonogram() -> () {
 
 	console::log_1(&JsValue::from_serde(&harmonogram).unwrap());
 
-    let root_element = get_root_element().unwrap();
+	unsafe { HM = Some(harmonogram.clone()) };
 
-    let app = smithy::smd!(
-		{ harmonogram.clone() }
-    );
-    smithy::mount(Box::new(app), root_element);
+	match  get_root_element() {
+		Ok(elem) => { 
+			let app = smithy::smd!(
+				{ harmonogram.clone() }
+			);
+			smithy::mount(Box::new(app), elem);
+		},
+		Err(_) => (),
+	}
+}
+
+#[wasm_bindgen]
+pub fn harmonogram_json() -> JsValue {
+	HARM_LOCK.call_once(|| {
+		while unsafe{ HM.is_none() } {
+			thread::yield_now()
+		}
+	});
+
+	JsValue::from_serde(unsafe { &HM.clone().unwrap() }).unwrap()
 }
 
 

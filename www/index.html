@@ -10,7 +10,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
 		<script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
 		<script type="module">
-			import init from './pkg/symposion_2019.js';
+			// WASM shity
+			import init, {harmonogram_json} from './pkg/symposion_2019.js';
 
 			async function run() {
 				await init();
@@ -18,9 +19,12 @@
 
 			run();
 
+			window.harmonogram_json = harmonogram_json;
+
+			// Parallax a MicroModal
 			let scene = document.getElementById('grid');
-			let parallax = new Parallax(scene)
-			MicroModal.init();;
+			let parallax = new Parallax(scene);
+			MicroModal.init();
 		</script>
 		<meta charset="UTF-8">
 	</head>
@@ -29,8 +33,8 @@
 			<div class="stars"></div>
 			<div class="twinkling"></div>
 			<div class="kosmonaut wobble">
-				<img class="planeta wobble" src="static/PLANETA.png" data-depth="0.3" style="height:172px">
-				<img class="lod wobble" src="static/RAKETA.png" data-depth="0.6" style="height:640px">
+				<img class="planeta wobble" src="static/PLANETA.png" data-depth="0.3">
+				<img class="lod wobble" src="static/RAKETA.png" data-depth="0.6">
 				<img class="kosmik wobble" src="static/KOSMONAUT.png" data-depth="1.1">
 			</div>
 			<div class="symposion">
