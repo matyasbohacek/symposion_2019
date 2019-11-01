@@ -29,7 +29,6 @@
 
     <div class="stars">
 
-
 			<div class="obsach" id="obsah">
         <div class="symposion">
   				<h1 style="margin-block-end: -0.75em; margin-left: -0.1em;">Symposion 2019</h1>
@@ -51,13 +50,19 @@
 				</div>
 
         <div class="smithy">
-          <button class="modal__btn modal__btn-primary" data-micromodal-trigger="modal-1">Harmonogram</button>
+          <button class="modal__btn modal__btn-primary" data-micromodal-trigger="modal-1" id="harmonogramBtn">Harmonogram</button>
         </div>
         <div class="harmonogram-button" id="harmonogram">
         </div>
         <div class="mapa" id="mapa">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2559.914628929994!2d14.38511141518236!3d50.08788522130457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x470b951a7d704bb3%3A0x844434940488c41e!2zUGFybMOpxZlvdmEgMTE4LzIsIDE2OSAwMCBQcmFoYSA2LUhyYWTEjWFueQ!5e0!3m2!1sen!2scz!4v1571811610988!5m2!1sen!2scz" height="450" frameborder="0" style="border:0px solid; border-radius: .6rem; width:100%; margin-top: 2em; margin-bottom: 4em;" allowfullscreen=""></iframe>
         </div>
+
+        <main class="harmonogram-tabulka">
+
+        </main>
+        <!--<script type="text/javascript" src="mobilescheduleprocessor.js"></script>-->
+
 
         <div class="ikonky">
   				<div class="half-ellipse">
@@ -72,5 +77,48 @@
       </div>
 
     </div>
+
+		<div id="modal0" class="modal">
+
+	    <!-- Modal content -->
+	    <div class="modal-content">
+	      <span class="close">&times;</span>
+
+				<h1 class="modal__title">Harmonogram</h1>
+				<div class="modal-harmonogram-table">
+					<main class="modal__content harmonogram-tabulka" id="modal-1-content">
+					</main>
+				</div>
+	    </div>
+
+  	</div>
+
+		<script type="text/javascript">
+			// Get the modal
+			var modal = document.getElementById("modal0");
+
+			// Get the button that opens the modal
+			var btn = document.getElementById("harmonogramBtn");
+
+			// Get the <span> element that closes the modal
+			var span = document.getElementsByClassName("close")[0];
+
+			// When the user clicks the button, open the modal
+			btn.onclick = function() {
+				modal.style.display = "block";
+			}
+
+			// When the user clicks on <span> (x), close the modal
+			span.onclick = function() {
+				modal.style.display = "none";
+			}
+
+			// When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) {
+				if (event.target == modal) {
+					modal.style.display = "none";
+				}
+			}
+		</script>
 	</body>
 </html>
